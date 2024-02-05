@@ -1,5 +1,4 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html>
  <head>
   <meta charset="utf-8">
@@ -20,10 +19,10 @@
       }
     </script>
   <script type="module">
-      import * as THREE from "three";
-      import { OrbitControls } from "./three.js-master/examples/jsm/controls/OrbitControls.js";
+     import * as THREE from "https://cdn.skypack.dev/three@110/build/three.module.js";
+  import { OrbitControls } from "https://cdn.skypack.dev/three@<version>/examples/jsm/controls/OrbitControls.js";
 
-      const scene = new THREE.Scene();
+   const scene = new THREE.Scene();
       scene.background = new THREE.Color(0xeee8aa);
       const camera = new THREE.PerspectiveCamera(
         75,
