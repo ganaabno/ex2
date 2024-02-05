@@ -1,0 +1,451 @@
+
+<!doctype html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>Загвар код 2</title>
+  <style>
+      body {
+        margin: 0;
+      }
+    </style>
+ </head>
+ <body>
+  <script type="importmap">
+      {
+        "imports": {
+          "three": "./three.js-master/build/three.module.js",
+          "three/addons/": "./three.js-master/examples/jsm/"
+        }
+      }
+    </script>
+  <script type="module">
+      import * as THREE from "three";
+      import { OrbitControls } from "./three.js-master/examples/jsm/controls/OrbitControls.js";
+
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0xeee8aa);
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      const axesHelper = new THREE.AxesHelper(20);
+      scene.add(axesHelper);
+
+      camera.position.z = 20;
+
+      const renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      const controls = new OrbitControls(camera, renderer.domElement);
+
+      // Chessboard
+
+      const geometry = new THREE.BoxGeometry(18, 18, 1);
+      const material = new THREE.MeshBasicMaterial({ color: 0xf8f8ff });
+      const Chessboard = new THREE.Mesh(geometry, material);
+      scene.add(Chessboard);
+
+      const wireframe = new THREE.WireframeGeometry(geometry);
+      const colorframe = new THREE.MeshBasicMaterial({ color: 0x000000 });
+
+      const line = new THREE.LineSegments(wireframe, colorframe);
+      line.material.depthTest = 17.9;
+      line.material.opacity = 17.9;
+      line.material.transparent = 0.9;
+
+      scene.add(line);
+
+      //Frame on top
+
+      const frameGeo = new THREE.PlaneGeometry(15.97, 15.97);
+      const wireframe1 = new THREE.WireframeGeometry(frameGeo);
+      const wireframeMaterial = new THREE.LineBasicMaterial({
+        color: 0x000000,
+      });
+      const square = new THREE.LineSegments(wireframe1, wireframeMaterial);
+      square.rotation.x = Math.PI * 1;
+
+      square.position.z = 0.51;
+
+      scene.add(square);
+
+      //cell
+
+      for (var i = 0; i < 4; i++) {
+        for (var j = 0; j < 4; j++) {
+          var cellGeo = new THREE.PlaneGeometry(2, 2);
+          var cellMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+          var cell1 = new THREE.Mesh(cellGeo, cellMat);
+          cell1.position.set(-7 + 4 * i, -7 + 4 * j, 0.51);
+          scene.add(cell1);
+          var cell2 = new THREE.Mesh(cellGeo, cellMat);
+          cell2.position.set(-5 + 4 * i, -5 + 4 * j, 0.51);
+          scene.add(cell2);
+        }
+      }
+
+      //pawn
+
+      for (var k = 0; k < 8; k++) {
+        const pawnGeo = new THREE.CylinderGeometry(0, 0.5, 2, 60);
+        const pawnMat = new THREE.MeshBasicMaterial({ color: 0x708090 });
+        const pawn = new THREE.Mesh(pawnGeo, pawnMat);
+        scene.add(pawn);
+        pawn.rotation.x = Math.PI / 2;
+        pawn.position.set(-7 + k * 2, -5, 1.6);
+
+        const headGeo = new THREE.SphereGeometry(0.4, 32, 16);
+        const headMat = new THREE.MeshBasicMaterial({ color: 0x708090 });
+        const pawnHead = new THREE.Mesh(headGeo, headMat);
+        scene.add(pawnHead);
+        pawnHead.position.set(-7 + k * 2, -5, 2.2);
+
+        const baseGeo = new THREE.TorusGeometry(0.4, 0.5, 3, 100);
+        const baseMat = new THREE.MeshBasicMaterial({ color: 0x708090 });
+        const basePawn = new THREE.Mesh(baseGeo, baseMat);
+        scene.add(basePawn);
+        basePawn.position.set(-7 + 1 * k * 2, -5, 0.52);
+      }
+      for (var k = 0; k < 8; k++) {
+        const pawnGeo = new THREE.CylinderGeometry(0, 0.5, 2, 60);
+        const pawnMat = new THREE.MeshBasicMaterial({ color: 0xfcae1e });
+        const pawn = new THREE.Mesh(pawnGeo, pawnMat);
+        scene.add(pawn);
+        pawn.rotation.x = Math.PI / 2;
+        pawn.position.set(7 - k * 2, 5, 1.6);
+
+        const headGeo = new THREE.SphereGeometry(0.4, 32, 16);
+        const headMat = new THREE.MeshBasicMaterial({ color: 0xfcae1e });
+        const pawnHead = new THREE.Mesh(headGeo, headMat);
+        scene.add(pawnHead);
+        pawnHead.position.set(7 - k * 2, 5, 2.2);
+
+        const baseGeo = new THREE.TorusGeometry(0.4, 0.5, 3, 100);
+        const baseMat = new THREE.MeshBasicMaterial({ color: 0xfcae1e });
+        const basePawn = new THREE.Mesh(baseGeo, baseMat);
+        scene.add(basePawn);
+        basePawn.position.set(7 - 1 * k * 2, 5, 0.52);
+      }
+
+      //rook
+
+      function createRook(x, y, z, color) {
+        const rookGeo = new THREE.CylinderGeometry(0.8, 0.8, 2.3, 32);
+        const rookMat = new THREE.MeshBasicMaterial({ color: color });
+        const rook = new THREE.Mesh(rookGeo, rookMat);
+        scene.add(rook);
+        rook.rotation.x = Math.PI / 2;
+        rook.position.set(x, y, z);
+      }
+
+      function rookHead1(x, y, z, color) {
+        const rookheadGeo = new THREE.TorusGeometry(0.8, 0.4, 8, 9);
+        const rookheadMat = new THREE.MeshBasicMaterial({
+          color: color,
+          side: THREE.DoubleSide,
+        });
+        const rookHead = new THREE.Mesh(rookheadGeo, rookheadMat);
+        scene.add(rookHead);
+        rookHead.position.set(x, y, z);
+      }
+
+      function rookBase(x, y, z, color) {
+        const rookBaseGeo = new THREE.TorusGeometry(0.7, 0.3, 8, 60);
+        const rookBaseMat = new THREE.MeshBasicMaterial({ color: color });
+        const rookBase = new THREE.Mesh(rookBaseGeo, rookBaseMat);
+        scene.add(rookBase);
+        rookBase.position.set(x, y, z);
+      }
+      const rookColors = [0xfcae1e, 0x708090, 0xfcae1e, 0x708090];
+
+      for (let i = 1; i < 7; i++) {
+        if (i !== 3 && i !== 4) {
+          for (let j = 1; j < 7; j++) {
+            if (j !== 3 && j !== 4) {
+              const x = i % 2 === 0 ? -7 : 7;
+              const y = j % 2 === 0 ? -7 : 7;
+              const z = 1.7;
+
+              const colorIndex = (i - 1) * 4 + (j - 1);
+              const color = rookColors[colorIndex % rookColors.length];
+
+              createRook(x, y, z, color);
+              rookBase(x, y, z - 1, color);
+              rookHead1(x, y, z + 0.9, color);
+            }
+          }
+        }
+      }
+
+      //Bishop
+
+      function createBishop(x, y, z, color) {
+        const bishopGeo = new THREE.CylinderGeometry(0, 0.7, 2.8, 70);
+        const bishopMat = new THREE.MeshBasicMaterial({ color: color });
+        const bishopBody = new THREE.Mesh(bishopGeo, bishopMat);
+        scene.add(bishopBody);
+        bishopBody.position.set(x, y, z);
+        bishopBody.rotation.x = Math.PI / 2;
+      }
+
+      function bishopHead(x, y, z, color) {
+        const headGeo1 = new THREE.SphereGeometry(0.6, 32, 16);
+        const headMat1 = new THREE.MeshBasicMaterial({ color: color });
+        const bishopHead1 = new THREE.Mesh(headGeo1, headMat1);
+        scene.add(bishopHead1);
+        bishopHead1.position.set(x, y, z);
+      }
+
+      function bishopCap1(x, y, z, color) {
+        const bishopCap = new THREE.CapsuleGeometry(0.2, 0.2, 200, 8);
+        const capMat = new THREE.MeshBasicMaterial({ color: color });
+        const capHead = new THREE.Mesh(bishopCap, capMat);
+        scene.add(capHead);
+        capHead.rotation.x = Math.PI / 2;
+        capHead.position.set(x, y, z);
+      }
+
+      const bishopColors = [0xfcae1e, 0xfcae1e, 0x708090, 0x708090];
+
+      for (let m = 1; m < 5; m++) {
+        if (m !== 5 && m !== 4) {
+          for (let c = 1; c < 5; c++) {
+            if (c !== 3 && c !== 4) {
+              const x = c % 2 === 0 ? -3 : 3;
+              const y = m % 2 === 0 ? -7 : 7;
+              const z = 2.1;
+
+              const colorIndex = (m - 1) * 2 + (c - 1);
+              const color = bishopColors[colorIndex % bishopColors.length];
+
+              createBishop(x, y, z, color);
+              bishopHead(x, y, z + 1, color);
+              bishopCap1(x, y, z + 1.6, color);
+            }
+          }
+        }
+      }
+
+      //Knight
+
+      function knightBody1(x, y, z, color) {
+        class CustomSinCurve extends THREE.Curve {
+          constructor(scale = 4) {
+            super();
+            this.scale = scale;
+          }
+
+          getPoint(t, optionalTarget = new THREE.Vector3()) {
+            const tx = t * 2 - 1.5;
+            const ty = Math.sin(2 * Math.PI * t);
+            const tz = 0.5;
+
+            return optionalTarget.set(tx, ty, tz).multiplyScalar(this.scale);
+          }
+        }
+
+        const path = new CustomSinCurve(1);
+        const knightGeo = new THREE.TubeGeometry(path, 4, 0.5, 8, false);
+        const knightMat = new THREE.MeshBasicMaterial({ color: color });
+        const knightBody = new THREE.Mesh(knightGeo, knightMat);
+        scene.add(knightBody);
+        knightBody.rotation.y = Math.PI / 2;
+        knightBody.rotation.x = Math.PI / 6;
+        knightBody.position.set(x, y, z);
+      }
+      function knightBase1(x, y, z, color) {
+        const knightBaseGeo = new THREE.TorusGeometry(0.7, 0.3, 8, 60);
+        const knightBaseMat = new THREE.MeshBasicMaterial({ color: color });
+        const knightBase = new THREE.Mesh(knightBaseGeo, knightBaseMat);
+        scene.add(knightBase);
+        knightBase.position.set(x, y, z);
+      }
+
+      function knightHead(x, y, z, color) {
+        const geometry = new THREE.ConeGeometry(0.5, 1, 32);
+        const material = new THREE.MeshBasicMaterial({ color: color });
+        const knightHead2 = new THREE.Mesh(geometry, material);
+        scene.add(knightHead2);
+        knightHead2.position.set(x, y, z);
+      }
+
+      const knightBodyColors = [0xfcae1e, 0xfcae1e, 0x708090, 0x708090];
+
+      for (let m = 1; m < 4; m++) {
+        if (m !== 5 && m !== 4) {
+          for (let c = 1; c < 5; c++) {
+            if (c !== 3 && c !== 4) {
+              const x = c % 2 === 0 ? -5.5 : 4.5;
+              const y = m % 2 === 0 ? -6.5 : 7.5;
+              const z = 1.3;
+
+              const colorIndex = (m - 1) * 2 + (c - 1);
+              const color =
+                knightBodyColors[colorIndex % knightBodyColors.length];
+
+              knightBody1(x, y, z, color);
+              knightBase1(x + 0.5, y - 0.5, z - 0.5, color);
+              knightHead(x + 0.5, y, z + 1.5, color);
+            }
+          }
+        }
+      }
+
+      //queen
+
+      function queen(x, y, z, color) {
+        const queenGeo = new THREE.CylinderGeometry(0, 0.7, 5, 70);
+        const queenMat = new THREE.MeshBasicMaterial({ color: color });
+        const queenBody = new THREE.Mesh(queenGeo, queenMat);
+        scene.add(queenBody);
+        queenBody.position.set(x, y, z);
+        queenBody.rotation.x = Math.PI / 2;
+      }
+
+      function queenBase(x, y, z, color) {
+        const queenBasGeo = new THREE.TorusGeometry(0.7, 0.3, 8, 60);
+        const queenBaseMat = new THREE.MeshBasicMaterial({ color: color });
+        const queenBase1 = new THREE.Mesh(queenBasGeo, queenBaseMat);
+        scene.add(queenBase1);
+        queenBase1.position.set(x, y, z);
+      }
+
+      function queenHead(x, y, z, color) {
+        const queenHeadGeo = new THREE.TorusKnotGeometry(
+          0.5,
+          0.3,
+          29,
+          4,
+          10,
+          3
+        );
+        const queenHeadMat = new THREE.MeshBasicMaterial({ color: color });
+        const queenHead1 = new THREE.Mesh(queenHeadGeo, queenHeadMat);
+        scene.add(queenHead1);
+        queenHead1.position.set(x, y, z);
+      }
+
+      function queenHead1(x, y, z, color) {
+        const queenHeadGeo1 = new THREE.SphereGeometry(0.4, 32, 16);
+        const queenHeadMat1 = new THREE.MeshBasicMaterial({ color: color });
+        const queenHead2 = new THREE.Mesh(queenHeadGeo1, queenHeadMat1);
+        scene.add(queenHead2);
+        queenHead2.position.set(x, y, z);
+      }
+
+      const queenHeadColors1 = [0xfcae1e, 0x708090];
+
+      queenHead1(1, 7, 4.6, queenHeadColors1[0]);
+      queenHead1(1, -7, 4.6, queenHeadColors1[1]);
+
+      const queenHeadColors = [0xfcae1e, 0x708090];
+
+      queenHead(1, 7, 4, queenHeadColors[0]);
+      queenHead(1, -7, 4, queenHeadColors[1]);
+
+      const queenBaseColors = [0xfcae1e, 0x708090];
+
+      queenBase(1, 7, 0.8, queenBaseColors[0]);
+      queenBase(1, -7, 0.8, queenBaseColors[1]);
+
+      const queenBodyColors = [0xfcae1e, 0x708090];
+
+      queen(1, 7, 3.1, queenBodyColors[0]);
+      queen(1, -7, 3.1, queenBodyColors[1]);
+
+      //King
+      function king(x, y, z, color) {
+        const kingGeo = new THREE.CylinderGeometry(0.3, 0.7, 4.5, 32);
+        const kingMat = new THREE.MeshBasicMaterial({ color: color });
+        const kingBody = new THREE.Mesh(kingGeo, kingMat);
+        scene.add(kingBody);
+        kingBody.position.set(x, y, z);
+        kingBody.rotation.x = Math.PI / 2;
+      }
+
+      const kingBodyColors = [0xfcae1e, 0x708090];
+
+      king(-1, 7, 2.8, kingBodyColors[0]);
+      king(-1, -7, 2.8, kingBodyColors[1]);
+
+      function kingHead1(x, y, z, color) {
+        const kingHeadGeo = new THREE.CylinderGeometry(0.9, 0.2, 2, 32);
+        const kingHeadMat = new THREE.MeshBasicMaterial({ color: color });
+        const kingHead = new THREE.Mesh(kingHeadGeo, kingHeadMat);
+        scene.add(kingHead);
+        kingHead.position.set(x, y, z);
+        kingHead.rotation.x = Math.PI / 2;
+      }
+      const kingHeadColors = [0xfcae1e, 0x708090];
+
+      kingHead1(-1, 7, 3.7, kingHeadColors[0]);
+      kingHead1(-1, -7, 3.7, kingHeadColors[1]);
+
+      function crown1(x, y, z, color) {
+        const crownGeo = new THREE.BoxGeometry(0.5, 0.5, 1);
+        const crownMat = new THREE.MeshBasicMaterial({ color: color });
+        const crown = new THREE.Mesh(crownGeo, crownMat);
+        scene.add(crown);
+
+        crown.position.set(x, y, z);
+      }
+      const crownColors = [0xfcae1e, 0x708090];
+
+      crown1(-1, 7, 5.5, crownColors[0]);
+      crown1(-1, -7, 5.5, crownColors[1]);
+
+      function crown2(x, y, z, color) {
+        const crownGeo1 = new THREE.BoxGeometry(0.5, 0.5, 1);
+        const crownMat1 = new THREE.MeshBasicMaterial({ color: color });
+        const crown3 = new THREE.Mesh(crownGeo1, crownMat1);
+        scene.add(crown3);
+        crown3.position.set(x, y, z);
+        crown3.rotation.y = Math.PI / 2;
+      }
+
+      const crownColors1 = [0xfcae1e, 0x708090];
+    
+      crown2(-1, 7, 5.5, crownColors1[0]);
+      crown2(-1, -7, 5.5, crownColors1[1]);
+
+      function kingBase(x, y, z, color) {
+        const kingBaseGeo = new THREE.TorusGeometry(0.7, 0.3, 8, 60);
+        const kingBaseMat = new THREE.MeshBasicMaterial({ color: color });
+        const kingBase1 = new THREE.Mesh(kingBaseGeo, kingBaseMat);
+        scene.add(kingBase1);
+        kingBase1.position.set(x, y, z);
+      }
+      const kingBaseColors = [0xfcae1e, 0x708090];
+
+      kingBase(-1, 7, 0.8, kingBaseColors[0]);
+      kingBase(-1, -7, 0.8, kingBaseColors[1]);
+
+
+      window.addEventListener("resize", onWindowResize, false);
+      function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        render();
+      }
+
+      function animate() {
+        requestAnimationFrame(animate);
+
+        controls.update();
+
+        render();
+      }
+
+      function render() {
+        renderer.render(scene, camera);
+      }
+
+      animate();
+    </script>
+ </body>
+</html>
