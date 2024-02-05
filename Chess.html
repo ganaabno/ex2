@@ -12,15 +12,17 @@
  <body>
   <script type="importmap">
       {
-        "imports": {
-          "three": "./three.js-master/build/three.module.js",
-          "three/addons/": "./three.js-master/examples/jsm/"
-        }
+        imports": {
+        "three": "https://cdn.skypack.dev/three@latest",
+        "three/examples/jsm/": "https://cdn.skypack.dev/three@latest/examples/jsm/",
+        "three/addons/": "https://cdn.skypack.dev/three@latest/examples/jsm/"
+      }
       }
     </script>
   <script type="module">
-    import * as THREE from "https://threejs.org/build/three.module.js";
-  import { OrbitControls } from "../Downloads/OrbitControls";  // Update the path
+    import * as THREE from "three/build/three.module.js";
+    import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+
    const scene = new THREE.Scene();
       scene.background = new THREE.Color(0xeee8aa);
       const camera = new THREE.PerspectiveCamera(
