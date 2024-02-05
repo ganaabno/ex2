@@ -10,11 +10,15 @@
     </style>
   </head>
   <body>
-<!-- Import Three.js -->
-    <script src="https://cdn.jsdelivr.net/npm/three@latest"></script>
+    <!-- Import Three.js -->
+    <script type="module">
+      import * as THREE from 'https://cdn.jsdelivr.net/npm/three@latest/build/three.module.js';
+    </script>
 
     <!-- Import OrbitControls -->
-    <script src="https://cdn.jsdelivr.net/npm/three@latest/examples/jsm/controls/OrbitControls.js"></script>
+    <script type="module">
+      import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@latest/examples/jsm/controls/OrbitControls.js';
+    </script>
 
     <script type="module">
     
