@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html>
- <head>
-  <meta charset="utf-8">
-  <title>Загвар код 2</title>
-  <style>
+  <head>
+    <meta charset="utf-8">
+    <title>Загвар код 2</title>
+    <style>
       body {
         margin: 0;
       }
     </style>
- </head>
- <body>
- <script type="importmap">
+  </head>
+  <body>
+<!--  <script type="importmap">
    {
      "imports": {
        "three": "./three.js-master/build/three.module.js",
        "three/addons/": "./three.js-master/examples/jsm/"
      }
-   }
+   } -->
 </script>
 
   <script type="module">
-   import * as THREE from "three";
-    import { OrbitControls } from "examples/jsm/controls/OrbitControls.js";
+   import * as THREE from "https://cdn.skypack.dev/three@latest/build/three.module.js";
+      import { OrbitControls } from "https://cdn.skypack.dev/three@latest/examples/jsm/controls/OrbitControls.js";
 
    const scene = new THREE.Scene();
       scene.background = new THREE.Color(0xeee8aa);
