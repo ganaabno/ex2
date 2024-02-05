@@ -1,27 +1,35 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Загвар код 2</title>
-    <style>
+ <head>
+  <meta charset="utf-8">
+  <title>Загвар код 2</title>
+  <style>
       body {
         margin: 0;
       }
     </style>
-  </head>
-  <body>
-    <!-- Import Three.js -->
-   <!-- Include Three.js directly -->
-<script type="module">
-      import * as THREE from 'https://cdn.skypack.dev/three@110.0.1/build/three.module.js';
+ </head>
+ <body>
+  <script type="importmap">
+      {
+        "imports": {
+          "three": "./three.js-master/build/three.module.js",
+          "three/addons/": "./three.js-master/examples/jsm/"
+        }
+      }
     </script>
+  <script type="module">
+      import * as THREE from "three";
+      import { OrbitControls } from "./three.js-master/examples/jsm/controls/OrbitControls.js";
 
-
-    <!-- Import OrbitControls -->
-   <script type="module">
-      import { OrbitControls } from 'https://cdn.skypack.dev/three@110.0.1/examples/jsm/controls/OrbitControls.js';
-      // Combine all your existing JavaScript code here...
       const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0xeee8aa);
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
       const axesHelper = new THREE.AxesHelper(20);
       scene.add(axesHelper);
 
@@ -429,14 +437,14 @@
 
         controls.update();
 
+        render();
+      }
+
+      function render() {
         renderer.render(scene, camera);
       }
 
-      // function render() {
-      //   renderer.render(scene, camera);
-      // }
-
       animate();
     </script>
-  </body>
+ </body>
 </html>
