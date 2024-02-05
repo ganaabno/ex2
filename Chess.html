@@ -18,18 +18,9 @@
     <!-- Import OrbitControls -->
     <script type="module">
       import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@latest/examples/jsm/controls/OrbitControls.js';
-    </script>
 
-    <script type="module">
-    
-   const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0xeee8aa);
-      const camera = new THREE.PerspectiveCamera(
-        75,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        1000
-      );
+      // Combine all your existing JavaScript code here...
+      const scene = new THREE.Scene();
       const axesHelper = new THREE.AxesHelper(20);
       scene.add(axesHelper);
 
@@ -446,5 +437,5 @@
 
       animate();
     </script>
- </body>
+  </body>
 </html>
